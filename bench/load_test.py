@@ -38,12 +38,12 @@ from typing import Any
 import grpc
 
 try:
-    import bioskop_pb2 as pb2
-    import bioskop_pb2_grpc as pb2_grpc
+    from proto import bioskop_pb2 as pb2
+    from proto import bioskop_pb2_grpc as pb2_grpc
 except ImportError:
     sys.stderr.write(
         "Stub proto belum di-generate. Jalankan dari root repo:\n"
-        "  python -m grpc_tools.protoc -I proto --python_out=. --grpc_python_out=. proto/bioskop.proto\n"
+        "  python -m grpc_tools.protoc -I . --python_out=. --grpc_python_out=. proto/bioskop.proto\n"
     )
     sys.exit(1)
 
@@ -189,7 +189,7 @@ def main(argv: list[str] | None = None) -> int:
         prog="bench.load_test", description="Uji kinerja 1/5/20 client (AGENTS.md §9)"
     )
     parser.add_argument("--host", default=os.environ.get("BIOSKOP_HOST", "localhost:50051"))
-    parser.add_argument("--jadwal", default="J1", help="jadwal_id target (sesuai seed server)")
+    parser.add_argument("--jadwal", default="jadwal-1", help="jadwal_id target (sesuai seed server)")
     parser.add_argument("--clients", nargs="+", type=int, default=[1, 5, 20])
     parser.add_argument("--requests", type=int, default=200, help="total request per percobaan (tetap)")
     parser.add_argument("--runs", type=int, default=3, help="diulang >= 3 kali lalu dirata-rata")

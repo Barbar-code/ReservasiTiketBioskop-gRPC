@@ -34,8 +34,8 @@ import grpc
 from client.resilient import DEFAULT_TIMEOUT_S, RpcGagal, panggil_rpc, pesan_ramah
 
 try:
-    import bioskop_pb2 as pb2
-    import bioskop_pb2_grpc as pb2_grpc
+    from proto import bioskop_pb2 as pb2
+    from proto import bioskop_pb2_grpc as pb2_grpc
 except ImportError:
     sys.stderr.write(
         "Stub proto belum di-generate. Jalankan dari root repo:\n"

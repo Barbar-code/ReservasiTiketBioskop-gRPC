@@ -21,7 +21,9 @@ sys.path.insert(0, str(ROOT))
 
 
 def _stub_tersedia() -> bool:
-    return (ROOT / "bioskop_pb2.py").exists() and (ROOT / "bioskop_pb2_grpc.py").exists()
+    return (ROOT / "proto" / "bioskop_pb2.py").exists() and (
+        ROOT / "proto" / "bioskop_pb2_grpc.py"
+    ).exists()
 
 
 def _generate_stub_jika_perlu() -> None:
@@ -38,12 +40,12 @@ def _generate_stub_jika_perlu() -> None:
             "-m",
             "grpc_tools.protoc",
             "-I",
-            str(ROOT / "proto"),
+            str(ROOT),
             "--python_out",
             str(ROOT),
             "--grpc_python_out",
             str(ROOT),
-            "bioskop.proto",
+            "proto/bioskop.proto",
         ],
         check=True,
         cwd=str(ROOT),
