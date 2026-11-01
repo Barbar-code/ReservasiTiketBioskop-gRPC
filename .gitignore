@@ -1,8 +1,11 @@
-# lingkungan & artefak Python
-venv/
+# artefak Python
 __pycache__/
 *.py[cod]
 .pytest_cache/
+
+# lingkungan virtual
+.venv/
+venv/
 
 # hasil generate proto — TIDAK di-commit (AGENTS.md §4)
 *_pb2.py
