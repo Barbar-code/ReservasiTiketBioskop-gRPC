@@ -1,0 +1,26 @@
+# docker/docker-compose.yml — demo 2 container (Ketentuan Wajib no. 4).
+# Jalankan dari root repo:  docker compose -f docker/docker-compose.yml up --build
+# Client menunjuk server lewat jaringan internal compose (BIOSKOP_HOST).
+services:
+  server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.server
+    ports:
+      - "50051:50051"
+
+  client:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.client
+    depends_on:
+      - server
+    environment:
+      BIOSKOP_HOST: "server:50051"
+    # Menu interaktif butuh TTY:
+    stdin_open: true
+    tty: true
+
+# Contoh pemakaian satu perintah (tanpa menu):
+#   docker compose -f docker/docker-compose.yml run --rm client \
+#     python -m client.main denah --jadwal J1
