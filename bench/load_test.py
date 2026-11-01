@@ -33,9 +33,16 @@ import sys
 import threading
 import time
 import uuid
+from pathlib import Path
 from typing import Any
 
 import grpc
+
+# Jalankan sebagai skrip langsung: root repo harus masuk sys.path agar
+# paket 'proto' (stub generate) dan 'server'/'client' dapat diimpor.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 try:
     from proto import bioskop_pb2 as pb2
