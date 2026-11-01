@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timezone
 from queue import Empty, Queue
 from typing import Iterator, NoReturn
@@ -17,6 +18,8 @@ from server.booking import (
 )
 from server.dedup import DedupStore
 from server.events import SeatEventHub
+
+_log = logging.getLogger(__name__)
 
 
 class LayananBioskopServicer(bioskop_pb2_grpc.LayananBioskopServicer):
@@ -104,6 +107,7 @@ class LayananBioskopServicer(bioskop_pb2_grpc.LayananBioskopServicer):
         # client) tidak boleh dieksekusi ulang — jawab dari cache.
         cache = self._dedup.get(request.request_id)
         if cache is not None:
+            _log.info("DEDUP HIT PesanKursi request_id=%s — tidak dieksekusi ulang", request.request_id)
             return cache
 
         try:
@@ -131,6 +135,10 @@ class LayananBioskopServicer(bioskop_pb2_grpc.LayananBioskopServicer):
         # Simpan SEBELUM membalas: bila balasan hilang, retry client tetap
         # menemukan respons yang sama (tanpa eksekusi ulang).
         self._dedup.put(request.request_id, response)
+        _log.info(
+            "PesanKursi dieksekusi request_id=%s sukses=%s kursi=%s",
+            request.request_id, result.sukses, ",".join(request.kode_kursi),
+        )
         return response
 
     def BatalkanPesanan(
