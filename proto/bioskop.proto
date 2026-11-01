@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package bioskop;
+
+service LayananBioskop {
+  rpc ListJadwal (ListJadwalRequest) returns (ListJadwalResponse);
+  rpc GetDenah (DenahRequest) returns (DenahResponse);
+  rpc PesanKursi (PesanKursiRequest) returns (PesanKursiResponse);
+  rpc BatalkanPesanan (BatalRequest) returns (BatalResponse);
+  rpc StreamStatusKursi (DenahRequest) returns (stream PerubahanKursi);
+}
+
+message ListJadwalRequest {}
+
+message Jadwal {
+  string jadwal_id = 1;
+  string film = 2;
+  string jam = 3;
+  int32 baris = 4;
+  int32 kolom = 5;
+}
+
+message ListJadwalResponse {
+  repeated Jadwal jadwal = 1;
+}
+
+message DenahRequest {
+  string jadwal_id = 1;
+}
+
+message DenahResponse {
+  string jadwal_id = 1;
+  repeated Kursi kursi = 2;
+}
+
+message Kursi {
+  string kode = 1;
+  StatusKursi status = 2;
+}
+
+enum StatusKursi {
+  TERSEDIA = 0;
+  DIPESAN = 1;
+}
+
+message PesanKursiRequest {
+  string request_id = 1;
+  string jadwal_id = 2;
+  string pemesan = 3;
+  repeated string kode_kursi = 4;
+}
+
+message PesanKursiResponse {
+  bool sukses = 1;
+  string pesan = 2;
+  string pesanan_id = 3;
+  repeated string kursi_gagal = 4;
+}
+
+message BatalRequest {
+  string request_id = 1;
+  string pesanan_id = 2;
+}
+
+message BatalResponse {
+  bool sukses = 1;
+  string pesan = 2;
+}
+
+message PerubahanKursi {
+  string jadwal_id = 1;
+  string kode = 2;
+  StatusKursi status = 3;
+  string waktu = 4;
+}
