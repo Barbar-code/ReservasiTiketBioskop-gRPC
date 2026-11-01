@@ -1,0 +1,4 @@
+# Hanya dependensi yang diizinkan AGENTS.md §11 (Tanpa tambahan lain).
+grpcio>=1.62
+grpcio-tools>=1.62
+pytest>=8
