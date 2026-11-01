@@ -1,0 +1,17 @@
+# docker/Dockerfile.server — image server gRPC (tugas Anggota 2)
+# Stub *_pb2*.py di-generate selama build karena tidak di-commit (§4 AGENTS.md).
+FROM python:3.11-slim
+
+WORKDIR /app
+ENV PYTHONUNBUFFERED=1
+
+# Hanya runtime yang dibutuhkan; pytest tidak dipasang di image.
+RUN pip install --no-cache-dir grpcio grpcio-tools
+
+COPY proto/ ./proto/
+COPY server/ ./server/
+
+RUN python -m grpc_tools.protoc -I proto --python_out=. --grpc_python_out=. proto/bioskop.proto
+
+EXPOSE 50051
+CMD ["python", "-m", "server.main", "--port", "50051", "--workers", "10"]

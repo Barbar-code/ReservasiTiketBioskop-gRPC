@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timezone
 from queue import Empty, Queue
 from typing import Iterator, NoReturn
@@ -15,7 +16,10 @@ from server.booking import (
     SeatStatus,
     ShowtimeNotFoundError,
 )
+from server.dedup import DedupStore
 from server.events import SeatEventHub
+
+_log = logging.getLogger(__name__)
 
 
 class LayananBioskopServicer(bioskop_pb2_grpc.LayananBioskopServicer):
@@ -23,9 +27,14 @@ class LayananBioskopServicer(bioskop_pb2_grpc.LayananBioskopServicer):
         self,
         booking_manager: BookingManager | None = None,
         event_hub: SeatEventHub | None = None,
+        dedup_store: DedupStore | None = None,
     ) -> None:
         self._booking_manager = booking_manager or BookingManager()
         self._event_hub = event_hub or SeatEventHub()
+        # At-most-once untuk operasi NON-idempoten (AGENTS.md §3.4);
+        # request_id dibuat client sekali per operasi logis & dipakai ulang
+        # pada setiap retry (client/resilient.py).
+        self._dedup = dedup_store or DedupStore()
 
     @staticmethod
     def _abort(
@@ -94,6 +103,13 @@ class LayananBioskopServicer(bioskop_pb2_grpc.LayananBioskopServicer):
         request: bioskop_pb2.PesanKursiRequest,
         context: grpc.ServicerContext,
     ) -> bioskop_pb2.PesanKursiResponse:
+        # At-most-once (AGENTS.md §3.4): request_id yang SAMA (hasil retry
+        # client) tidak boleh dieksekusi ulang — jawab dari cache.
+        cache = self._dedup.get(request.request_id)
+        if cache is not None:
+            _log.info("DEDUP HIT PesanKursi request_id=%s — tidak dieksekusi ulang", request.request_id)
+            return cache
+
         try:
             result = self._booking_manager.book_seats(
                 request.jadwal_id,
@@ -110,18 +126,31 @@ class LayananBioskopServicer(bioskop_pb2_grpc.LayananBioskopServicer):
                 self._event_hub.publish(
                     self._event(request.jadwal_id, seat_code, bioskop_pb2.DIPESAN)
                 )
-        return bioskop_pb2.PesanKursiResponse(
+        response = bioskop_pb2.PesanKursiResponse(
             sukses=result.sukses,
             pesan=result.pesan,
             pesanan_id=result.pesanan_id,
             kursi_gagal=result.kursi_gagal,
         )
+        # Simpan SEBELUM membalas: bila balasan hilang, retry client tetap
+        # menemukan respons yang sama (tanpa eksekusi ulang).
+        self._dedup.put(request.request_id, response)
+        _log.info(
+            "PesanKursi dieksekusi request_id=%s sukses=%s kursi=%s",
+            request.request_id, result.sukses, ",".join(request.kode_kursi),
+        )
+        return response
 
     def BatalkanPesanan(
         self,
         request: bioskop_pb2.BatalRequest,
         context: grpc.ServicerContext,
     ) -> bioskop_pb2.BatalResponse:
+        # At-most-once: sama seperti PesanKursi (batal juga non-idempoten).
+        cache = self._dedup.get(request.request_id)
+        if cache is not None:
+            return cache
+
         try:
             result = self._booking_manager.cancel_booking(request.pesanan_id)
         except BookingNotFoundError as exc:
@@ -138,7 +167,9 @@ class LayananBioskopServicer(bioskop_pb2_grpc.LayananBioskopServicer):
                         bioskop_pb2.TERSEDIA,
                     )
                 )
-        return bioskop_pb2.BatalResponse(sukses=result.sukses, pesan=result.pesan)
+        response = bioskop_pb2.BatalResponse(sukses=result.sukses, pesan=result.pesan)
+        self._dedup.put(request.request_id, response)
+        return response
 
     def StreamStatusKursi(
         self,
