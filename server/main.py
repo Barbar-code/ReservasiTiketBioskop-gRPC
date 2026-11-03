@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import logging
 import random
+import threading
 import time
 from concurrent import futures
 
@@ -24,6 +25,7 @@ from proto import bioskop_pb2_grpc
 from server.booking import BookingManager
 from server.events import SeatEventHub
 from server.service import LayananBioskopServicer
+from server.web import create_web_server
 
 
 class InterceptorSimulasiLambat(grpc.ServerInterceptor):
@@ -100,6 +102,8 @@ def main() -> None:
         prog="server.main", description="Server gRPC reservasi tiket bioskop"
     )
     parser.add_argument("--port", type=int, default=50051, help="port yang didengarkan")
+    parser.add_argument("--web-host", default="0.0.0.0", help="alamat dashboard web")
+    parser.add_argument("--web-port", type=int, default=8080, help="port dashboard web")
     parser.add_argument("--workers", type=int, default=10, help="besar ThreadPoolExecutor")
     parser.add_argument(
         "--simulate-slow",
@@ -121,14 +125,21 @@ def main() -> None:
         jeda_min_s=args.jeda_min,
         jeda_maks_s=args.jeda_maks,
     )
-    server.start()
+    web_server = create_web_server(f"127.0.0.1:{args.port}", args.web_host, args.web_port)
+    thread_web = threading.Thread(target=web_server.serve_forever, daemon=True)
     mode = " [simulate-slow]" if args.simulate_slow else ""
-    logging.info("Server gRPC berjalan di port %s%s — Ctrl+C untuk berhenti.", args.port, mode)
     try:
+        server.start()
+        thread_web.start()
+        logging.info("Server gRPC berjalan di port %s%s.", args.port, mode)
+        logging.info("Dashboard web tersedia di http://%s:%s.", args.web_host, web_server.server_port)
         server.wait_for_termination()
     except KeyboardInterrupt:
         logging.info("Menghentikan server")
     finally:
+        if thread_web.is_alive():
+            web_server.shutdown()
+        web_server.server_close()
         server.stop(grace=5).wait()
 
 

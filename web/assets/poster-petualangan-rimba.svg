@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320">
+  <defs>
+    <linearGradient id="canopy" x2="0" y2="1">
+      <stop stop-color="#243b3d"/>
+      <stop offset=".46" stop-color="#60775e"/>
+      <stop offset="1" stop-color="#d0a873"/>
+    </linearGradient>
+    <linearGradient id="trail" x2="0" y2="1">
+      <stop stop-color="#f1c987"/>
+      <stop offset="1" stop-color="#a97a53"/>
+    </linearGradient>
+    <radialGradient id="opening">
+      <stop stop-color="#f4d293" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#f4d293" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="240" height="320" fill="url(#canopy)"/>
+  <ellipse cx="145" cy="166" rx="88" ry="125" fill="url(#opening)"/>
+  <path d="M97 320q9-67 37-111 18 42 21 111z" fill="url(#trail)"/>
+  <path d="M0 180q34-37 73-9 24-45 54-22 28-42 61-10 20-26 52-4v185H0z" fill="#38564a"/>
+  <path d="M0 223q36-29 70-6 34-28 73-5 36-32 97-4v112H0z" fill="#293f3c"/>
+  <path d="M17 0h24v159H17zm184 0h19v139h-19zM0 37l52 24-8 17L0 61zm240 43-49 23-8-16 57-29z" fill="#243a39"/>
+  <path d="M30 89 0 67m34 34 31-31M210 78l-24-24m23 44 31-23" fill="none" stroke="#90a172" stroke-linecap="round" stroke-width="8"/>
+  <path d="M80 165v93m0-68-22-21m22 38 20-23m64-27v92m0-65-19-19m19 39 22-25" fill="none" stroke="#d7bb82" stroke-opacity=".8" stroke-linecap="round" stroke-width="3"/>
+  <path d="M120 161v54m0-35-14-13m14 26 15-15" fill="none" stroke="#24332f" stroke-linecap="round" stroke-width="6"/>
+  <text x="20" y="31" fill="#f3d9a8" font-family="Arial,sans-serif" font-size="8" letter-spacing="3">SEBUAH PETUALANGAN</text>
+  <text x="18" y="65" fill="#fff2d6" font-family="Georgia,serif" font-size="21" letter-spacing=".5">PETUALANGAN</text>
+  <text x="18" y="94" fill="#fff2d6" font-family="Georgia,serif" font-size="29" font-weight="bold" letter-spacing="2">RIMBA</text>
+  <path d="M20 105h96" stroke="#e9c987" stroke-opacity=".85"/>
+  <text x="20" y="306" fill="#e1d3ad" font-family="Arial,sans-serif" font-size="6" letter-spacing="2">IKUTI PANGGILAN ALAM</text>
+</svg>
