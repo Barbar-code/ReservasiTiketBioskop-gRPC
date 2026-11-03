@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f5f2">
+    <meta name="description" content="Dashboard reservasi tiket bioskop Layar.">
+    <title>Layar — Reservasi Bioskop</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+      <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 3v18M17 3v18M3 8h4m-4 8h4m10-8h4m-4 8h4"/></symbol>
+      <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 0 0 4v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 1 0-4V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/><path d="M13 5v2m0 4v2m0 4v2"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9a7 7 0 0 1 11.6-2L20 12M4 12l2.8 5a7 7 0 0 0 11.6-2"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="m19 15 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></symbol>
+    </svg>
+
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#overview" aria-label="Layar beranda">
+          <span class="brand-mark"><svg><use href="#i-film"></use></svg></span>
+          <span><strong>layar<span class="brand-dot">.</span></strong><small>BIOSKOP PILIHAN</small></span>
+        </a>
+        <div class="sidebar-label">MENU UTAMA</div>
+        <nav class="side-nav" aria-label="Navigasi utama">
+          <a class="nav-link active" href="#overview"><svg><use href="#i-grid"></use></svg><span>Dashboard</span></a>
+          <a class="nav-link" href="#jadwal"><svg><use href="#i-film"></use></svg><span>Jadwal film</span><span class="nav-count" id="schedule-count">—</span></a>
+          <a class="nav-link" href="#pesanan"><svg><use href="#i-ticket"></use></svg><span>Pesanan saya</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="help-card">
+            <span class="help-icon"><svg><use href="#i-ticket"></use></svg></span>
+            <strong>Siap menonton?</strong>
+            <p>Pilih kursi favoritmu sebelum kehabisan.</p>
+            <a href="#jadwal">Lihat jadwal <svg><use href="#i-arrow"></use></svg></a>
+          </div>
+          <div class="profile-row">
+            <div class="avatar">K</div>
+            <div><strong>Kibar</strong><small>Selamat menonton!</small></div>
+            <span class="online-dot" title="Aplikasi aktif"></span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="overview">
+        <header class="topbar">
+          <div class="breadcrumb"><span>Beranda</span><span class="crumb-slash">/</span><strong>Dashboard</strong></div>
+          <div class="topbar-right">
+            <div class="live-status"><span class="pulse-dot"></span><span id="connection-label">Menghubungkan...</span></div>
+            <time class="timezone-clock" id="wib-clock" aria-label="Waktu Indonesia Barat"></time>
+            <div class="today-label" id="today-label"></div>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="welcome-row">
+            <div>
+              <p class="eyebrow"><span class="eyebrow-line"></span> BIOSKOP, TANPA RIBET</p>
+              <h1>Halo, penikmat film <span class="heading-spark">✳</span></h1>
+              <p class="welcome-copy">Temukan cerita berikutnya. Pilih film, atur kursi, dan nikmati pertunjukannya.</p>
+            </div>
+            <a class="outline-button" href="#pesanan"><svg><use href="#i-ticket"></use></svg> Pesanan saya</a>
+          </section>
+
+          <section class="hero-banner" aria-label="Sambutan Layar">
+            <div class="hero-copy">
+              <span class="hero-kicker"><span></span> MOMEN TERBAIK DIMULAI DI SINI</span>
+              <h2>Cerita hebat.<br><em>Layar yang tepat.</em></h2>
+              <p>Pengalaman menonton yang lebih dekat, nyaman, dan mudah.</p>
+              <a class="hero-button" href="#jadwal">Jelajahi film <svg><use href="#i-arrow"></use></svg></a>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+              <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+              <div class="art-sun"></div><div class="art-hill hill-back"></div><div class="art-hill hill-front"></div>
+              <div class="art-ticket"><svg><use href="#i-ticket"></use></svg><span>YOUR<br>NEXT<br>STORY</span></div>
+              <span class="art-star star-one">✦</span><span class="art-star star-two">✳</span>
+              <span class="art-caption">a little escape<br>for your day</span>
+            </div>
+            <div class="hero-index"><span>01</span><i></i><span>02</span><i></i><span>03</span></div>
+          </section>
+
+          <section class="stats-row" aria-label="Ringkasan">
+            <article class="stat-card">
+              <div class="stat-icon icon-lilac"><svg><use href="#i-film"></use></svg></div>
+              <div><span class="stat-label">Film tayang</span><strong id="stat-films">—</strong><small>pilihan hari ini</small></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-icon icon-peach"><svg><use href="#i-clock"></use></svg></div>
+              <div><span class="stat-label">Jadwal tersedia</span><strong id="stat-shows">—</strong><small>siap untuk dipilih</small></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-icon icon-mint"><svg><use href="#i-ticket"></use></svg></div>
+              <div><span class="stat-label">Kursi tersedia</span><strong id="stat-seats">—</strong><small id="stat-seat-caption">pilih jadwal film</small></div>
+            </article>
+          </section>
+
+          <section class="section-block" id="jadwal">
+            <div class="section-heading">
+              <div><p class="eyebrow">PILIH CERITAMU</p><h2>Jadwal film <span class="heading-period">.</span></h2><p class="section-subtitle">Film pilihan yang sedang tayang di Layar.</p></div>
+              <button class="text-button" id="refresh-button" type="button"><svg><use href="#i-refresh"></use></svg> Perbarui</button>
+            </div>
+            <div class="schedule-grid" id="schedule-grid">
+              <div class="loading-card"><span class="loader"></span> Memuat jadwal film...</div>
+            </div>
+          </section>
+
+          <section class="booking-section" id="kursi">
+            <div class="section-heading booking-heading">
+              <div><p class="eyebrow">ATUR TEMPAT DUDUK</p><h2>Pilih kursimu <span class="heading-period">.</span></h2><p class="section-subtitle">Kursi pilihan akan diamankan setelah pemesanan berhasil.</p></div>
+              <div class="selected-film-pill"><span class="tiny-film-icon"><svg><use href="#i-film"></use></svg></span><span id="selected-film-label">Pilih jadwal terlebih dahulu</span><svg class="pill-chevron"><use href="#i-arrow"></use></svg></div>
+            </div>
+
+            <div class="booking-layout">
+              <div class="seat-card">
+                <div class="screen-label"><span>LAYAR</span></div>
+                <div class="screen-glow"></div>
+                <div class="seat-grid-wrap" id="seat-grid-wrap">
+                  <div class="seat-empty"><div class="empty-seat-icon"><svg><use href="#i-ticket"></use></svg></div><strong>Pilih jadwal film</strong><span>Denah kursi akan tampil di sini.</span></div>
+                </div>
+                <div class="seat-legend">
+                  <span><i class="legend-seat available"></i>Tersedia</span>
+                  <span><i class="legend-seat chosen"></i>Pilihanmu</span>
+                  <span><i class="legend-seat occupied"></i>Terisi</span>
+                </div>
+                <div class="seat-footer"><span><span class="pulse-dot small"></span> Status kursi diperbarui langsung</span><span id="seat-count-label">0 kursi dipilih</span></div>
+              </div>
+
+              <aside class="order-card">
+                <div class="order-card-top"><span class="order-step">RINGKASAN</span><span class="order-step-number">01 <i>/ 02</i></span></div>
+                <h3>Pesananmu</h3>
+                <p class="order-hint">Pastikan pilihanmu sudah sesuai.</p>
+                <div class="order-divider"></div>
+                <div class="order-detail"><span>Film</span><strong id="order-film">Belum dipilih</strong></div>
+                <div class="order-detail"><span>Jam tayang</span><strong id="order-time">—</strong></div>
+                <div class="order-detail"><span>Kursi</span><strong id="order-seats">Pilih kursi</strong></div>
+                <label class="input-label" for="customer-name">Nama pemesan</label>
+                <input id="customer-name" class="name-input" type="text" maxlength="80" placeholder="Masukkan nama kamu" autocomplete="name">
+                <button class="primary-button book-button" id="book-button" type="button" disabled>
+                  <span>Pesan kursi</span><svg><use href="#i-arrow"></use></svg>
+                </button>
+                <div class="secure-note"><svg><use href="#i-check"></use></svg> Tanpa akun, langsung pesan</div>
+                <div class="order-mini-note"><span class="mini-dot"></span> Pemesanan kursi diproses secara aman dan atomik.</div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="section-block recent-section" id="pesanan">
+            <div class="section-heading">
+              <div><p class="eyebrow">RIWAYAT DI PERANGKAT INI</p><h2>Pesanan saya <span class="heading-period">.</span></h2><p class="section-subtitle">Pesanan tersimpan di browser ini, tanpa perlu login.</p></div>
+            </div>
+            <div class="recent-list" id="recent-list"><div class="recent-empty"><span class="recent-ticket-icon"><svg><use href="#i-ticket"></use></svg></span><div><strong>Belum ada pesanan</strong><p>Pesananmu akan muncul di sini setelah berhasil dibuat.</p></div><a href="#jadwal">Cari film <svg><use href="#i-arrow"></use></svg></a></div></div>
+          </section>
+
+          <footer class="footer"><a class="footer-brand" href="#overview">layar<span>.</span></a><span>Tempat cerita menjadi pengalaman.</span><span class="footer-copy">© <span id="current-year"></span> Layar Bioskop</span></footer>
+        </div>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

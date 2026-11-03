@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1">
+      <stop stop-color="#423454"/>
+      <stop offset=".48" stop-color="#b66c79"/>
+      <stop offset="1" stop-color="#f2ad83"/>
+    </linearGradient>
+    <linearGradient id="sunset" x2="0" y2="1">
+      <stop stop-color="#ffe4ae"/>
+      <stop offset="1" stop-color="#f7ad91"/>
+    </linearGradient>
+    <linearGradient id="ground" x2="0" y2="1">
+      <stop stop-color="#68465e"/>
+      <stop offset="1" stop-color="#302b40"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="9"/></filter>
+  </defs>
+  <rect width="240" height="320" fill="url(#sky)"/>
+  <circle cx="169" cy="127" r="51" fill="#ffd7a4" opacity=".27" filter="url(#glow)"/>
+  <circle cx="169" cy="127" r="36" fill="url(#sunset)"/>
+  <path d="M0 192q39-29 83-7t84-6q39-24 73-3v144H0z" fill="#80556a" opacity=".78"/>
+  <path d="M0 225q44-33 92-13t73-2q45-28 75 0v110H0z" fill="url(#ground)"/>
+  <path d="M0 276h240v44H0z" fill="#292638" opacity=".64"/>
+  <path d="M0 251q30-11 60 0t59 0 60 0 61 0" fill="none" stroke="#f1b895" stroke-opacity=".5" stroke-width="2"/>
+  <path d="M41 230v68m0-60-17-20m17 29 18-21m-18 37-16-16m16 27 15-15M202 217v70m0-57-17-19m17 28 16-21m-16 37-14-14m14 26 14-14" fill="none" stroke="#292638" stroke-linecap="round" stroke-width="7"/>
+  <path d="M120 226v52m0-41-14-14m14 25 15-18" fill="none" stroke="#252435" stroke-linecap="round" stroke-width="6"/>
+  <path d="M22 38h23m-23 7h15" stroke="#ffe0bf" stroke-opacity=".72" stroke-linecap="round" stroke-width="2"/>
+  <text x="20" y="36" fill="#ffead2" font-family="Georgia,serif" font-size="8" letter-spacing="3">SEBUAH FILM</text>
+  <text x="20" y="67" fill="#fff5ec" font-family="Georgia,serif" font-size="26" letter-spacing="1">LANGIT</text>
+  <text x="20" y="94" fill="#fff5ec" font-family="Georgia,serif" font-size="26" font-style="italic" letter-spacing="1">SENJA</text>
+  <path d="M21 105h68" stroke="#ffe0bf" stroke-opacity=".8"/>
+  <text x="20" y="307" fill="#ead5d3" font-family="Arial,sans-serif" font-size="6" letter-spacing="2">CERITA DI UJUNG HARI</text>
+</svg>
