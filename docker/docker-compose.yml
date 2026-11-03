@@ -8,6 +8,7 @@ services:
       dockerfile: docker/Dockerfile.server
     ports:
       - "50051:50051"
+      - "8080:8080"
 
   client:
     build:

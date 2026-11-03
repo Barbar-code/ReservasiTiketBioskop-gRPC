@@ -45,6 +45,7 @@ python -m server.main --port 50051 --workers 10
 | Argumen | Arti |
 |---|---|
 | `--port` | port yang didengarkan (default 50051) |
+| `--web-host` / `--web-port` | alamat dan port dashboard web (default `0.0.0.0:8080`) |
 | `--workers` | besar `ThreadPoolExecutor` (default 10) |
 | `--simulate-slow` | jeda balasan acak **setelah** operasi selesai — untuk demo retry client + dedup server |
 | `--jeda-min` / `--jeda-maks` | batas jeda simulasi (detik; default 0,3 / 1,5) |
@@ -56,6 +57,19 @@ dimulai ulang. Setiap jadwal memiliki lock tersendiri; semua kursi dalam satu
 transaksi diperiksa dan dipesan dalam critical section yang sama. Peristiwa
 streaming dipancarkan setelah lock dilepas agar subscriber tidak memperlambat
 pemesanan.
+
+### Dashboard web
+
+Server juga menyajikan aplikasi web responsif tanpa login atau dependensi
+frontend tambahan. Jalankan server seperti biasa, lalu buka
+**http://localhost:8080**. Dashboard menampilkan jadwal dan denah kursi,
+memperbarui status kursi secara realtime, serta mendukung pemesanan dan
+pembatalan. Riwayat ditampilkan dari penyimpanan lokal browser (maksimal 10
+pesanan); sumber data dan konsistensi transaksi tetap ditangani server gRPC.
+
+Untuk akses dari perangkat lain, buka `http://<alamat-server>:8080` dan
+pastikan port web diizinkan firewall. Di Docker Compose, dashboard tersedia
+melalui **http://localhost:8080**.
 
 ### Demo retry + dedup (`--simulate-slow`)
 
@@ -140,6 +154,7 @@ client/
 tests/                    # test_booking/test_race/test_events/test_service (A1), test_dedup (A2)
 bench/load_test.py        # kinerja 1/5/20 client → CSV (Anggota 2)
 docker/                   # Dockerfile server & client + compose 2 container (A2)
+web/                      # Dashboard responsif dan poster film lokal (SVG)
 ```
 
 ## Catatan desain penting (bahan laporan)
